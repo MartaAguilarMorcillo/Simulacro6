@@ -76,6 +76,11 @@ const loadModel = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: new Date()
+    },
+    // SOLUCIÓN
+    discount: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0
     }
   }, {
     sequelize,
