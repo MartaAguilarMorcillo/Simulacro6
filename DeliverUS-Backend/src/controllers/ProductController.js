@@ -107,12 +107,85 @@ const popular = async function (req, res) {
   }
 }
 
+// SOLUCIÓN
+const newIndexRestaurant = async function (req, res) {
+  try {
+    const restaurantProducts = await Restaurant.findByPk(req.params.restaurantId)
+    const products = await Product.findAll({
+      where: {
+        restaurantId: req.params.restaurantId
+      }
+    })
+    if (restaurantProducts.discount !== 0) {
+      for (const pr of products) {
+        const datoProducto = await Product.findByPk(pr.productId)
+        pr.price = (1 - restaurantProducts.discount) * datoProducto.price
+        await pr.save()
+      }
+    }
+    const newProducts = await Product.findAll({
+      where: {
+        restaurantId: req.params.restaurantId
+      },
+      include: [
+        {
+          model: ProductCategory,
+          as: 'productCategory'
+        }]
+    })
+    res.json(newProducts)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+}
+
+// SOLUCIÓN
+const newPrices = async function (req, res) {
+  try {
+    const restaurant = await Restaurant.findByPk(req.params.restaurantId)
+    const products = await Product.findAll({
+      where: {
+        restaurantId: req.params.restaurantId
+      }
+    })
+    if (restaurant.discount > 0) {
+      for (const pr of products) {
+        const product = await Product.findByPk(pr.id)
+        const precio = (1 - restaurant.discount) * product.price
+        // const precio = (1 - restaurant.discount) * product.basePrice
+        await Product.update({ price: precio }, { where: { id: product.id } })
+      }
+    } // else {
+    //    for (const pr of products) {
+    //      const product = await Product.findByPk(pr.id)
+    //      const precio = product.basePrice
+    //      await Product.update({ price: precio }, { where: { id: product.id } })
+    //    }
+    //  }
+    const newProducts = await Product.findAll({
+      where: {
+        restaurantId: req.params.restaurantId
+      },
+      include: [
+        {
+          model: ProductCategory,
+          as: 'productCategory'
+        }]
+    })
+    res.json(newProducts)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+}
+
 const ProductController = {
   indexRestaurant,
   show,
   create,
   update,
   destroy,
-  popular
+  popular,
+  newIndexRestaurant,
+  newPrices
 }
 export default ProductController

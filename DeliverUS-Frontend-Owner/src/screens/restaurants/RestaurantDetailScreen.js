@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, FlatList, ImageBackground, Image, Pressable } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { getDetail } from '../../api/RestaurantEndpoints'
+import { getDetail, newPrices } from '../../api/RestaurantEndpoints'
 import { remove } from '../../api/ProductEndpoints'
 import ImageCard from '../../components/ImageCard'
 import TextRegular from '../../components/TextRegular'
@@ -117,6 +117,8 @@ export default function RestaurantDetailScreen ({ navigation, route }) {
 
   const fetchRestaurantDetail = async () => {
     try {
+      // SOLUCIÓN
+      // await newPrices(route.params.id)
       const fetchedRestaurant = await getDetail(route.params.id)
       setRestaurant(fetchedRestaurant)
     } catch (error) {

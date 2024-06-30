@@ -295,6 +295,7 @@ export default function EditRestaurantScreen ({ navigation, route }) {
                 <Image style={styles.image} source={values.heroImage ? { uri: values.heroImage.assets[0].uri } : restaurantBackground} />
               </Pressable>
 
+              <View style={styles.actionButtonsContainer}>
               <Pressable onPress={() =>
                 incrementDiscount(
                   async result => {
@@ -302,10 +303,10 @@ export default function EditRestaurantScreen ({ navigation, route }) {
                   }
                 )
               }
-                style={ styles.button }
+                style={ styles.actionButton }
               >
                 <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
-                  <MaterialCommunityIcons name='plus-circle' color={'black'} size={20}/>
+                  <MaterialCommunityIcons name='arrow-up-circle-outline' color={'black'} size={20}/>
                 </View>
               </Pressable>
 
@@ -320,12 +321,13 @@ export default function EditRestaurantScreen ({ navigation, route }) {
                   }
                 )
               }
-                style={ styles.button }
+                style={ styles.actionButton }
               >
                 <View style={[{ flex: 1, flexDirection: 'row', justifyContent: 'center' }]}>
-                  <MaterialCommunityIcons name='minus-circle' color={'black'} size={20}/>
+                  <MaterialCommunityIcons name='arrow-down-circle-outline' color={'black'} size={20}/>
                 </View>
               </Pressable>
+              </View>
 
               {backendErrors &&
                 backendErrors.map((error, index) => <TextError key={index}>{error.param}-{error.msg}</TextError>)
@@ -389,5 +391,21 @@ const styles = StyleSheet.create({
     color: 'black',
     alignSelf: 'center',
     marginLeft: 5
+  },
+  actionButton: {
+    borderRadius: 8,
+    height: 60,
+    marginTop: 12,
+    margin: '1%',
+    padding: 10,
+    alignSelf: 'center',
+    flexDirection: 'column',
+    width: '50%'
+  },
+  actionButtonsContainer: {
+    flexDirection: 'row',
+    bottom: 5,
+    position: 'relative',
+    width: '95%'
   }
 })
